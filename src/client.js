@@ -146,8 +146,8 @@ Client = (function(_super) {
         };
       })(this));
       this.ws.on('close', (function(_this) {
-        return function() {
-          _this.emit('close');
+        return function(code, message) {
+          _this.emit('close', code, message);
           _this.connected = false;
           return _this.socketUrl = null;
         };
