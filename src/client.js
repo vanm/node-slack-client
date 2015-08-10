@@ -69,6 +69,7 @@ Client = (function(_super) {
 
   Client.prototype._onLogin = function(data) {
     var c, g, i, k, u;
+    this.reconnecting = false;
     if (data) {
       if (!data.ok) {
         this.emit('error', data.error);
@@ -148,6 +149,9 @@ Client = (function(_super) {
       this.ws.on('close', (function(_this) {
         return function(code, message) {
           _this.emit('close', code, message);
+          if (_this.autoReconnect && !_this.reconnecting) {
+            _this.reconnect();
+          }
           _this.connected = false;
           return _this.socketUrl = null;
         };
@@ -177,6 +181,7 @@ Client = (function(_super) {
 
   Client.prototype.reconnect = function() {
     var timeout;
+    this.reconnecting = true;
     if (this._pongTimeout) {
       clearInterval(this._pongTimeout);
       this._pongTimeout = null;
