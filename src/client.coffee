@@ -134,9 +134,6 @@ class Client extends EventEmitter
         @connected = false
         @socketUrl = null
 
-      @ws.on 'ping', (data, flags) =>
-        @ws.pong
-
       return true
 
   disconnect: ->
