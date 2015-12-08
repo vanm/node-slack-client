@@ -156,11 +156,6 @@ Client = (function(_super) {
           return _this.socketUrl = null;
         };
       })(this));
-      this.ws.on('ping', (function(_this) {
-        return function(data, flags) {
-          return _this.ws.pong;
-        };
-      })(this));
       return true;
     }
   };
@@ -308,6 +303,15 @@ Client = (function(_super) {
     return this.users[id];
   };
 
+  Client.prototype.getUserByEmail = function(email) {
+    var k;
+    for (k in this.users) {
+      if (this.users[k].profile.email === email) {
+        return this.users[k];
+      }
+    }
+  };
+
   Client.prototype.getUserByName = function(name) {
     var k;
     for (k in this.users) {
@@ -394,7 +398,7 @@ Client = (function(_super) {
         count += channel.unread_count;
       }
     }
-    _ref1 = this.ims;
+    _ref1 = this.dms;
     for (id in _ref1) {
       dm = _ref1[id];
       if (dm.unread_count != null) {
@@ -421,7 +425,7 @@ Client = (function(_super) {
         unreads.push(channel);
       }
     }
-    _ref1 = this.ims;
+    _ref1 = this.dms;
     for (id in _ref1) {
       dm = _ref1[id];
       if (dm.unread_count > 0) {
